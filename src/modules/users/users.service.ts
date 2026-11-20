@@ -31,22 +31,19 @@ class UsersService {
     return this.mapper.mapEntityListToDtoList(users);
   }
 
-  async getActiveEntityById(id: number): Promise<User | null> {
+  async getActiveEntityById(id: number): Promise<User> {
     const user = await this.repository.findById(id);
 
     if (!user || !user.active) {
-      return null;
+      // return null;
+      throw new Error();
     }
 
     return user;
   }
 
-  async getActiveUserById(id: number): Promise<UserDto | null> {
-    const user: User | null = await this.getActiveEntityById(id);
-
-    if (!user || !user.active) {
-      return null;
-    }
+  async getActiveUserById(id: number): Promise<UserDto> {
+    const user: User = await this.getActiveEntityById(id);
 
     return this.mapper.mapEntityToDto(user);
   }
